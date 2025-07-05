@@ -22,14 +22,21 @@ replay_pid*
 # Java / Spring Boot / Maven
 # ==========================
 /backend/target/
+target/
 .mvn/
 mvnw
 mvnw.cmd
 /backend/.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.jar
 /backend/.classpath
+.classpath
 /backend/.project
+.project
 /backend/.settings/
+.settings/
 !/backend/src/main/resources/db/migration/*.sql
+!**/src/main/**/target/
+!**/src/test/**/target/
 
 # Compiled class files
 *.class
@@ -49,6 +56,26 @@ mvnw.cmd
 *.tar.gz
 *.rar
 
+### STS ###
+.apt_generated
+.factorypath
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+*.iws
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
 # ==========================
 # Node / Frontend
 # ==========================
@@ -63,6 +90,7 @@ yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
 .pnpm-store/
+pnpm-debug.log*
 
 # Frontend build output
 /frontend/dist
@@ -98,6 +126,7 @@ out
 # Nuxt
 .nuxt
 dist
+dist-ssr
 
 # Gatsby
 .cache/
@@ -150,3 +179,15 @@ dist
 
 # Output of 'npm pack'
 *.tgz
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Misc
+HELP.md
