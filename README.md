@@ -47,14 +47,15 @@ ecommerce-app/
 │   ├── package.json
 │   └── vite.config.js
 │
-└── backend/       # Spring Boot REST API
-    ├── src/
-    │   ├── main/
-    │   │   ├── java/com/yourcompany/yourapp/
-    │   │   └── resources/
-    │   └── test/
-    ├── pom.xml
-    └── README.md
+├── backend/       # Spring Boot REST API
+│    ├── src/
+│    │   ├── main/
+│    │   │   ├── java/com/nextphase/backend/
+│    │   │   └── resources/
+│    │   └── test/
+│    └── pom.xml
+│
+└── README.md
 ```
 
 ---
