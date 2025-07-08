@@ -20,7 +20,7 @@ public class LocalUser {
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
-    @Column(name = "password", nullable = false, length = 25)
+    @Column(name = "password", nullable = false, length = 1000)
     private String password;
 
     @Column(name = "email", nullable = false, unique = true)
