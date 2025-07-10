@@ -1,10 +1,7 @@
 package com.nextphase.backend.api.model;
 
 import jakarta.validation.constraints.*;
-import lombok.Getter;
 
-
-@Getter
 public class RegistrationBody {
 
 
@@ -31,4 +28,24 @@ public class RegistrationBody {
     @NotNull
     @NotBlank
     private String lastName;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
 }

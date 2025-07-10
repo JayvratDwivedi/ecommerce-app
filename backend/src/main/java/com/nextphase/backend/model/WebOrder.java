@@ -1,16 +1,11 @@
 package com.nextphase.backend.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "web_order")
-@Getter
-@Setter
 public class WebOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,4 +22,36 @@ public class WebOrder {
 
     @OneToMany(mappedBy = "webOrder", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<WebOrderQuantities> webOrderQuantities = new ArrayList<>();
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public LocalUser getLocalUser() {
+        return localUser;
+    }
+
+    public void setLocalUser(LocalUser localUser) {
+        this.localUser = localUser;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public List<WebOrderQuantities> getWebOrderQuantities() {
+        return webOrderQuantities;
+    }
+
+    public void setWebOrderQuantities(List<WebOrderQuantities> webOrderQuantities) {
+        this.webOrderQuantities = webOrderQuantities;
+    }
 }
