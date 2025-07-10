@@ -4,10 +4,12 @@ import com.nextphase.backend.api.model.LoginBody;
 import com.nextphase.backend.api.model.LoginResponse;
 import com.nextphase.backend.api.model.RegistrationBody;
 import com.nextphase.backend.exception.UserAlreadyExistException;
+import com.nextphase.backend.model.LocalUser;
 import com.nextphase.backend.service.LocalUserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -42,4 +44,10 @@ public class AuthenticationController {
             return ResponseEntity.ok(response);
         }
     }
+
+    @GetMapping("/me")
+    public LocalUser getLoggedInUserProfile(@AuthenticationPrincipal LocalUser localUser){
+        return localUser;
+    }
+
 }
