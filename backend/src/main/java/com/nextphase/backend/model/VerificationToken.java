@@ -2,6 +2,8 @@ package com.nextphase.backend.model;
 
 import jakarta.persistence.*;
 
+import java.sql.Timestamp;
+
 @Entity
 @Table(name = "verification_token")
 public class VerificationToken {
@@ -17,6 +19,17 @@ public class VerificationToken {
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private LocalUser localUser;
+
+    @Column(name = "created_timestamp", nullable = false)
+    private Timestamp createdTimestamp;
+
+    public Timestamp getCreatedTimestamp() {
+        return createdTimestamp;
+    }
+
+    public void setCreatedTimestamp(Timestamp createdTimestamp) {
+        this.createdTimestamp = createdTimestamp;
+    }
 
     public Long getId() {
         return id;

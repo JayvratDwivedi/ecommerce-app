@@ -2,11 +2,13 @@ package com.nextphase.backend.service;
 
 import com.nextphase.backend.api.model.LoginBody;
 import com.nextphase.backend.api.model.RegistrationBody;
+import com.nextphase.backend.model.VerificationToken;
 import com.nextphase.backend.model.dao.LocalUserDao;
 import com.nextphase.backend.exception.UserAlreadyExistException;
 import com.nextphase.backend.model.LocalUser;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 
 @Service
@@ -32,7 +34,17 @@ public class LocalUserService {
         localUser.setFirstname(registrationBody.getFirstName());
         localUser.setLastname(registrationBody.getLastName());
         localUser.setPassword(encryptionService.encryptPassword(registrationBody.getPassword()));
+        VerificationToken verificationToken = createVerificationToken(localUser);
         return localUserDao.save(localUser);
+    }
+
+    private VerificationToken createVerificationToken(LocalUser localUser){
+        VerificationToken verificationToken = new VerificationToken();
+        verificationToken.setToken(jwtService.generateVerificationJWT(localUser));
+        verificationToken.setCreatedTimestamp(new Timestamp(System.currentTimeMillis()));
+        verificationToken.setLocalUser(localUser);
+        localUser.getVerificationTokens().add(verificationToken);
+        return verificationToken;
     }
 
     public String loginUser(LoginBody loginBody){
