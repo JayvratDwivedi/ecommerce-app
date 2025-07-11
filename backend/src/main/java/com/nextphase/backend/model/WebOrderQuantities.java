@@ -1,13 +1,10 @@
 package com.nextphase.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Table(name = "web_order_quantities")
-@Getter
-@Setter
 public class WebOrderQuantities {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,10 +17,40 @@ public class WebOrderQuantities {
     @Column(name = "quantity")
     private Integer quantity;
 
+    @JsonIgnore
     @ManyToOne(optional = false)
     @JoinColumn(name = "order_id", nullable = false)
     private WebOrder webOrder;
 
+    public long getId() {
+        return id;
+    }
 
+    public void setId(long id) {
+        this.id = id;
+    }
 
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public WebOrder getWebOrder() {
+        return webOrder;
+    }
+
+    public void setWebOrder(WebOrder webOrder) {
+        this.webOrder = webOrder;
+    }
 }
