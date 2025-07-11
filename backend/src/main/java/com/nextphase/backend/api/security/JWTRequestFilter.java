@@ -2,7 +2,7 @@ package com.nextphase.backend.api.security;
 
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.nextphase.backend.model.LocalUser;
-import com.nextphase.backend.model.dao.LocalUserDao;
+import com.nextphase.backend.model.dao.LocalUserDAO;
 import com.nextphase.backend.service.JWTService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -21,9 +21,9 @@ import java.util.Optional;
 @Component
 public class JWTRequestFilter extends OncePerRequestFilter {
     private JWTService jwtService;
-    private LocalUserDao localUserDao;
+    private LocalUserDAO localUserDao;
 
-    public JWTRequestFilter(JWTService jwtService, LocalUserDao localUserDao) {
+    public JWTRequestFilter(JWTService jwtService, LocalUserDAO localUserDao) {
         this.jwtService = jwtService;
         this.localUserDao = localUserDao;
     }

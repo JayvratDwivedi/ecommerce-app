@@ -6,6 +6,6 @@ import org.springframework.data.repository.ListCrudRepository;
 
 import java.util.List;
 
-public interface WebOrderDao extends ListCrudRepository<WebOrder, Long> {
+public interface WebOrderDAO extends ListCrudRepository<WebOrder, Long> {
     List<WebOrder> findByLocalUser(LocalUser localUser);
 }

@@ -2,16 +2,16 @@ package com.nextphase.backend.service;
 
 import com.nextphase.backend.model.LocalUser;
 import com.nextphase.backend.model.WebOrder;
-import com.nextphase.backend.model.dao.WebOrderDao;
+import com.nextphase.backend.model.dao.WebOrderDAO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class OrderService {
-    private WebOrderDao webOrderDao;
+    private WebOrderDAO webOrderDao;
 
-    public OrderService(WebOrderDao webOrderDao) {
+    public OrderService(WebOrderDAO webOrderDao) {
         this.webOrderDao = webOrderDao;
     }
 
