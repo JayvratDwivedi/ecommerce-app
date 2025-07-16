@@ -30,8 +30,4 @@ public class JWTServiceTest {
         String token = jwtService.generateJWT(user);
         Assertions.assertEquals(user.getUsername(), jwtService.getUsername(token), "Token for auth should contain users username.");
     }
-
-
-
-
 }

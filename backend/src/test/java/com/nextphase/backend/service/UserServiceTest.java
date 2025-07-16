@@ -24,10 +24,10 @@ import java.util.List;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class LocalUserServiceTest {
+public class UserServiceTest {
 
     @Autowired
-    private LocalUserService localUserService;
+    private UserService userService;
 
     @Autowired
     private VerificationTokenDAO verificationTokenDAO;
@@ -48,13 +48,13 @@ public class LocalUserServiceTest {
         body.setLastName("Last-Name");
         body.setPassword("MyPassword123");
         Assertions.assertThrows(UserAlreadyExistException.class,
-                () -> localUserService.registerUser(body), "Username should already be in use.");
+                () -> userService.registerUser(body), "Username should already be in use.");
         body.setUsername("UserServiceTest$testRegisterUser");
         body.setEmail("UserA@junit.com");
         Assertions.assertThrows(UserAlreadyExistException.class,
-                () -> localUserService.registerUser(body), "Email should already be in use.");
+                () -> userService.registerUser(body), "Email should already be in use.");
         body.setEmail("UserServiceTest$testRegisterUser@junit.com");
-        Assertions.assertDoesNotThrow(() -> localUserService.registerUser(body));
+        Assertions.assertDoesNotThrow(() -> userService.registerUser(body));
         Assertions.assertEquals(body.getEmail(), greenMailExtension.getReceivedMessages()[0]
                 .getRecipients(Message.RecipientType.TO)[0].toString());
 
@@ -66,22 +66,22 @@ public class LocalUserServiceTest {
         LoginBody body = new LoginBody();
         body.setUsername("UserA-NotExists");
         body.setPassword("PasswordA123-BadPassword");
-        Assertions.assertNull( localUserService.loginUser(body), "The user should not exist.");
+        Assertions.assertNull( userService.loginUser(body), "The user should not exist.");
         body.setUsername("UserA");
-        Assertions.assertNull( localUserService.loginUser(body), "The password should be incorrect.");
+        Assertions.assertNull( userService.loginUser(body), "The password should be incorrect.");
         body.setPassword("PasswordA123");
-        Assertions.assertNotNull( localUserService.loginUser(body), "The user should login successfully.");
+        Assertions.assertNotNull( userService.loginUser(body), "The user should login successfully.");
         body.setUsername("UserB");
         body.setPassword("PasswordB123");
         try {
-            localUserService.loginUser(body);
+            userService.loginUser(body);
             Assertions.fail("User should not have email verified.");
         } catch (UserNotVerifiedException e) {
             Assertions.assertTrue(e.isNewEmailSent(), "Email Verification to be sent.");
             Assertions.assertEquals(1, greenMailExtension.getReceivedMessages().length);
         }
         try {
-            localUserService.loginUser(body);
+            userService.loginUser(body);
             Assertions.fail("User should not have email verified.");
         } catch (UserNotVerifiedException e) {
             Assertions.assertFalse(e.isNewEmailSent(), "Email verification should not be resent.");
@@ -92,17 +92,17 @@ public class LocalUserServiceTest {
     @Test
     @Transactional
     public void testVerifyUser() throws EmailFailureException {
-        Assertions.assertFalse(localUserService.verifyUser("Bad Token"), "Token that is bad or does not exist should return false.");
+        Assertions.assertFalse(userService.verifyUser("Bad Token"), "Token that is bad or does not exist should return false.");
         LoginBody body = new LoginBody();
         body.setUsername("UserB");
         body.setPassword("PasswordB123");
         try {
-            localUserService.loginUser(body);
+            userService.loginUser(body);
             Assertions.fail("User should not have email verified.");
         } catch (UserNotVerifiedException ex) {
             List<VerificationToken> tokens = verificationTokenDAO.findByLocalUser_IdOrderByIdDesc(2L);
             String token = tokens.getFirst().getToken();
-            Assertions.assertTrue(localUserService.verifyUser(token), "Token should be valid.");
+            Assertions.assertTrue(userService.verifyUser(token), "Token should be valid.");
             Assertions.assertNotNull(body, "The user should now be verified.");
         }
     }

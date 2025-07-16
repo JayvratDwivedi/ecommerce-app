@@ -17,15 +17,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class LocalUserService {
+public class UserService {
     private LocalUserDAO localUserDao;
     private EncryptionService encryptionService;
     private JWTService jwtService;
     private EmailService emailService;
     private VerificationTokenDAO verificationTokenDAO;
 
-    public LocalUserService(LocalUserDAO localUserDao, EncryptionService encryptionService,
-                            JWTService jwtService, EmailService emailService, VerificationTokenDAO verificationTokenDAO) {
+    public UserService(LocalUserDAO localUserDao, EncryptionService encryptionService,
+                       JWTService jwtService, EmailService emailService, VerificationTokenDAO verificationTokenDAO) {
         this.localUserDao = localUserDao;
         this.encryptionService = encryptionService;
         this.jwtService = jwtService;

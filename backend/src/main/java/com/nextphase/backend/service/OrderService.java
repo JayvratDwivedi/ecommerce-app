@@ -16,6 +16,6 @@ public class OrderService {
     }
 
     public List<WebOrder> getOrders(LocalUser localUser) {
-        return webOrderDao.findByLocalUser(localUser);
+        return webOrderDao.findByUser(localUser);
     }
 }
