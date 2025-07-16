@@ -18,11 +18,11 @@ public class EmailService {
     private String url;
     private JavaMailSender javaMailSender;
 
-    public EmailService(JavaMailSender javaMailSender){
+    public EmailService(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
 
-    private SimpleMailMessage makeMailMessage(){
+    private SimpleMailMessage makeMailMessage() {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setFrom(fromAddress);
         return simpleMailMessage;
@@ -34,9 +34,9 @@ public class EmailService {
         message.setSubject("Verify your email to activate your account.");
         message.setText("Please follow the link below to verify your email to activate your account.\n"
         + url + "/verify?token=" + verificationToken.getToken());
-        try{
+        try {
             javaMailSender.send(message);
-        } catch(MailException e){
+        } catch(MailException e) {
             throw new EmailFailureException();
         }
     }

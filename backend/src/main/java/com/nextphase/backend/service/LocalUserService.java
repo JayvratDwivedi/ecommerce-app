@@ -35,7 +35,7 @@ public class LocalUserService {
 
     public LocalUser registerUser(RegistrationBody registrationBody) throws UserAlreadyExistException, EmailFailureException {
         if(localUserDao.findByEmailIgnoreCase(registrationBody.getEmail()).isPresent()
-                || localUserDao.findByUsernameIgnoreCase(registrationBody.getUsername()).isPresent()){
+                || localUserDao.findByUsernameIgnoreCase(registrationBody.getUsername()).isPresent()) {
             throw new UserAlreadyExistException();
         }
         LocalUser localUser = new LocalUser();
@@ -49,7 +49,7 @@ public class LocalUserService {
         return localUserDao.save(localUser);
     }
 
-    private VerificationToken createVerificationToken(LocalUser localUser){
+    private VerificationToken createVerificationToken(LocalUser localUser) {
         VerificationToken verificationToken = new VerificationToken();
         verificationToken.setToken(jwtService.generateVerificationJWT(localUser));
         verificationToken.setCreatedTimestamp(new Timestamp(System.currentTimeMillis()));
@@ -60,17 +60,17 @@ public class LocalUserService {
 
     public String loginUser(LoginBody loginBody) throws UserNotVerifiedException, EmailFailureException {
         Optional<LocalUser> localUser = localUserDao.findByUsernameIgnoreCase(loginBody.getUsername());
-        if(localUser.isPresent()){
+        if(localUser.isPresent()) {
             LocalUser user = localUser.get();
-            if(encryptionService.verifyPassword(loginBody.getPassword(), user.getPassword())){
-                if(user.isEmailVerified()){
+            if(encryptionService.verifyPassword(loginBody.getPassword(), user.getPassword())) {
+                if(user.isEmailVerified()) {
                     return jwtService.generateJWT(user);
                 }
-                else{
+                else {
                     List<VerificationToken> verificationTokens= user.getVerificationTokens();
                     boolean resend = verificationTokens.isEmpty() ||
                             verificationTokens.getFirst().getCreatedTimestamp().before(new Timestamp(System.currentTimeMillis() - 60 * 60 *1000));
-                    if(resend){
+                    if(resend) {
                         VerificationToken verificationToken = createVerificationToken(user);
                         verificationTokenDAO.save(verificationToken);
                         emailService.sendVerificationEmail(verificationToken);
@@ -84,12 +84,12 @@ public class LocalUserService {
     }
 
     @Transactional
-    public boolean verifyUser(String token){
+    public boolean verifyUser(String token) {
         Optional<VerificationToken> opToken = verificationTokenDAO.findByToken(token);
-        if(opToken.isPresent()){
+        if(opToken.isPresent()) {
             VerificationToken verificationToken = opToken.get();
             LocalUser user = verificationToken.getLocalUser();
-            if(!user.isEmailVerified()){
+            if(!user.isEmailVerified()) {
                 user.setEmailVerified(true);
                 localUserDao.save(user);
                 verificationTokenDAO.deleteByLocalUser(user);

@@ -13,7 +13,7 @@ public class ProductService {
     public ProductService(ProductDAO productDao) {
         this.productDao = productDao;
     }
-    public List<Product> getProducts(){
+    public List<Product> getProducts() {
         return productDao.findAll();
     }
 }

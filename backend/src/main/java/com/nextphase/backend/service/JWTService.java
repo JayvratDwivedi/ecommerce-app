@@ -22,21 +22,21 @@ public class JWTService {
     private static final String EMAIL_KEY = "EMAIL";
 
     @PostConstruct
-    public void postConstruct(){
+    public void postConstruct() {
         algorithm = Algorithm.HMAC256(algorithmKey);
     }
 
-    public String generateJWT(LocalUser localUser){
+    public String generateJWT(LocalUser localUser) {
         return JWT.create()
                 .withClaim(USERNAME_KEY, localUser.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + (1000 * expiryInSeconds)))
                 .withIssuer(issuer)
                 .sign(algorithm);
     }
-    public String getUsername(String token){
+    public String getUsername(String token) {
         return JWT.decode(token).getClaim(USERNAME_KEY).asString();
     }
-    public String generateVerificationJWT(LocalUser localUser){
+    public String generateVerificationJWT(LocalUser localUser) {
         return JWT.create()
                 .withClaim(EMAIL_KEY, localUser.getEmail())
                 .withExpiresAt(new Date(System.currentTimeMillis() + (1000 * expiryInSeconds)))

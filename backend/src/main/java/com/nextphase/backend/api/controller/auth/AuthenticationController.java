@@ -29,7 +29,7 @@ public class AuthenticationController {
             localUserService.registerUser(registrationBody);
             return ResponseEntity.ok().build();
 
-        }catch (UserAlreadyExistException e){
+        } catch (UserAlreadyExistException e){
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
 
         } catch (EmailFailureException e) {
@@ -38,7 +38,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> loginUser(@Valid @RequestBody LoginBody loginBody){
+    public ResponseEntity<LoginResponse> loginUser(@Valid @RequestBody LoginBody loginBody) {
         String jwt = null;
         try {
             jwt = localUserService.loginUser(loginBody);
@@ -49,7 +49,7 @@ public class AuthenticationController {
             response.setSuccess(false);
             String reason = "USER_NOT_VERIFIED";
 
-            if(e.isNewEmailSent()){
+            if(e.isNewEmailSent()) {
                 reason += "_EMAIL_RESENT";
             }
 
@@ -73,13 +73,13 @@ public class AuthenticationController {
     }
 
     @GetMapping("/me")
-    public LocalUser getLoggedInUserProfile(@AuthenticationPrincipal LocalUser localUser){
+    public LocalUser getLoggedInUserProfile(@AuthenticationPrincipal LocalUser localUser) {
         return localUser;
     }
 
     @PostMapping("/verify")
-    public ResponseEntity verifyEmail(@RequestParam String token){
-        if(localUserService.verifyUser(token)){
+    public ResponseEntity verifyEmail(@RequestParam String token) {
+        if(localUserService.verifyUser(token)) {
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();

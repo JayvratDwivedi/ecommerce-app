@@ -15,7 +15,7 @@ public class OrderService {
         this.webOrderDao = webOrderDao;
     }
 
-    public List<WebOrder> getOrders(LocalUser localUser){
+    public List<WebOrder> getOrders(LocalUser localUser) {
         return webOrderDao.findByLocalUser(localUser);
     }
 }

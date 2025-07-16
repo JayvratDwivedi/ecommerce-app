@@ -31,7 +31,7 @@ public class AuthenticationControllerTest {
 
     @Test
     @Transactional
-    public void testRegister() throws Exception{
+    public void testRegister() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         RegistrationBody body = new RegistrationBody();
         body.setEmail("AuthenticationControllerTest$testRegister@junit.com");
