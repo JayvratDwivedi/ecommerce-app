@@ -39,21 +39,21 @@ public class LocalUserServiceTest {
     @Test
     @Transactional
     public void testRegisterUser() throws MessagingException {
-        RegistrationBody registrationBody = new RegistrationBody();
-        registrationBody.setUsername("UserA");
-        registrationBody.setEmail("UserServiceTest$testRegisterUser@junit.com");
-        registrationBody.setFirstName("First-Name");
-        registrationBody.setLastName("Last-Name");
-        registrationBody.setPassword("MyPassword123");
+        RegistrationBody body = new RegistrationBody();
+        body.setUsername("UserA");
+        body.setEmail("UserServiceTest$testRegisterUser@junit.com");
+        body.setFirstName("First-Name");
+        body.setLastName("Last-Name");
+        body.setPassword("MyPassword123");
         Assertions.assertThrows(UserAlreadyExistException.class,
-                () -> localUserService.registerUser(registrationBody), "Username should already be in use.");
-        registrationBody.setUsername("UserServiceTest$testRegisterUser");
-        registrationBody.setEmail("UserA@junit.com");
+                () -> localUserService.registerUser(body), "Username should already be in use.");
+        body.setUsername("UserServiceTest$testRegisterUser");
+        body.setEmail("UserA@junit.com");
         Assertions.assertThrows(UserAlreadyExistException.class,
-                () -> localUserService.registerUser(registrationBody), "Email should already be in use.");
-        registrationBody.setEmail("UserServiceTest$testRegisterUser@junit.com");
-        Assertions.assertDoesNotThrow(() -> localUserService.registerUser(registrationBody));
-        Assertions.assertEquals(registrationBody.getEmail(), greenMailExtension.getReceivedMessages()[0]
+                () -> localUserService.registerUser(body), "Email should already be in use.");
+        body.setEmail("UserServiceTest$testRegisterUser@junit.com");
+        Assertions.assertDoesNotThrow(() -> localUserService.registerUser(body));
+        Assertions.assertEquals(body.getEmail(), greenMailExtension.getReceivedMessages()[0]
                 .getRecipients(Message.RecipientType.TO)[0].toString());
 
     }
@@ -61,25 +61,25 @@ public class LocalUserServiceTest {
     @Test
     @Transactional
     public void testLoginUser() throws UserNotVerifiedException, EmailFailureException {
-        LoginBody loginBody = new LoginBody();
-        loginBody.setUsername("UserA-NotExists");
-        loginBody.setPassword("PasswordA123-BadPassword");
-        Assertions.assertNull( localUserService.loginUser(loginBody), "The user should not exist.");
-        loginBody.setUsername("UserA");
-        Assertions.assertNull( localUserService.loginUser(loginBody), "The password should be incorrect.");
-        loginBody.setPassword("PasswordA123");
-        Assertions.assertNotNull( localUserService.loginUser(loginBody), "The user should login successfully.");
-        loginBody.setUsername("UserB");
-        loginBody.setPassword("PasswordB123");
+        LoginBody body = new LoginBody();
+        body.setUsername("UserA-NotExists");
+        body.setPassword("PasswordA123-BadPassword");
+        Assertions.assertNull( localUserService.loginUser(body), "The user should not exist.");
+        body.setUsername("UserA");
+        Assertions.assertNull( localUserService.loginUser(body), "The password should be incorrect.");
+        body.setPassword("PasswordA123");
+        Assertions.assertNotNull( localUserService.loginUser(body), "The user should login successfully.");
+        body.setUsername("UserB");
+        body.setPassword("PasswordB123");
         try {
-            localUserService.loginUser(loginBody);
+            localUserService.loginUser(body);
             Assertions.fail("User should not have email verified.");
         } catch (UserNotVerifiedException e) {
             Assertions.assertTrue(e.isNewEmailSent(), "Email Verification to be sent.");
             Assertions.assertEquals(1, greenMailExtension.getReceivedMessages().length);
         }
         try {
-            localUserService.loginUser(loginBody);
+            localUserService.loginUser(body);
             Assertions.fail("User should not have email verified.");
         } catch (UserNotVerifiedException e) {
             Assertions.assertFalse(e.isNewEmailSent(), "Email verification should not be resent.");
