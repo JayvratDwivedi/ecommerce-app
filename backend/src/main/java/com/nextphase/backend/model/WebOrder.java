@@ -14,7 +14,7 @@ public class WebOrder {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    private LocalUser localUser;
+    private LocalUser user;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "address_id", nullable = false)
@@ -31,12 +31,12 @@ public class WebOrder {
         this.id = id;
     }
 
-    public LocalUser getLocalUser() {
-        return localUser;
+    public LocalUser getUser() {
+        return user;
     }
 
-    public void setLocalUser(LocalUser localUser) {
-        this.localUser = localUser;
+    public void setUser(LocalUser user) {
+        this.user = user;
     }
 
     public Address getAddress() {

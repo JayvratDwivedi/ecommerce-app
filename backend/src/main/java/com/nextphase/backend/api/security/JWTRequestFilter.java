@@ -31,18 +31,20 @@ public class JWTRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String tokenHeader = request.getHeader("Authorization");
-        if(tokenHeader != null && tokenHeader.startsWith("Bearer ")){
+        if(tokenHeader != null && tokenHeader.startsWith("Bearer ")) {
             String token = tokenHeader.substring(7);
-            try{
+            try {
                 String username = jwtService.getUsername(token);
                 Optional<LocalUser> opUser = localUserDao.findByUsernameIgnoreCase(username);
-                if(opUser.isPresent()){
-                    LocalUser localuser = opUser.get();
-                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(localuser, null, new ArrayList<>());
-                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                if(opUser.isPresent()) {
+                    LocalUser user = opUser.get();
+                    if(user.isEmailVerified()) {
+                        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+                        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    }
                 }
-            }catch (JWTDecodeException e){
+            } catch (JWTDecodeException e) {
 
             }
         }

@@ -12,15 +12,15 @@ public class EncryptionService {
     private String salt;
 
     @PostConstruct
-    public void postConstruct(){
+    public void postConstruct() {
         salt = BCrypt.gensalt(saltRounds);
     }
 
-    public String encryptPassword(String password){
+    public String encryptPassword(String password) {
         return BCrypt.hashpw(password, salt);
     }
 
-    public boolean verifyPassword(String password, String hash){
+    public boolean verifyPassword(String password, String hash) {
         return BCrypt.checkpw(password, hash);
     }
 }

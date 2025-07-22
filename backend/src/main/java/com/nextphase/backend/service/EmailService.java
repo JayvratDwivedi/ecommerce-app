@@ -1,6 +1,7 @@
 package com.nextphase.backend.service;
 
 import com.nextphase.backend.exception.EmailFailureException;
+import com.nextphase.backend.model.LocalUser;
 import com.nextphase.backend.model.VerificationToken;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
@@ -18,11 +19,11 @@ public class EmailService {
     private String url;
     private JavaMailSender javaMailSender;
 
-    public EmailService(JavaMailSender javaMailSender){
+    public EmailService(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
 
-    private SimpleMailMessage makeMailMessage(){
+    private SimpleMailMessage makeMailMessage() {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setFrom(fromAddress);
         return simpleMailMessage;
@@ -34,9 +35,23 @@ public class EmailService {
         message.setSubject("Verify your email to activate your account.");
         message.setText("Please follow the link below to verify your email to activate your account.\n"
         + url + "/verify?token=" + verificationToken.getToken());
-        try{
+        try {
             javaMailSender.send(message);
-        } catch(MailException e){
+        } catch(MailException e) {
+            throw new EmailFailureException();
+        }
+    }
+
+    public void sendPasswordResetEmail(LocalUser user, String token) throws EmailFailureException {
+        SimpleMailMessage message = makeMailMessage();
+        message.setTo(user.getEmail());
+        message.setSubject("Your password reset request link.");
+        message.setText("You requested a password reset on our website. Please " +
+                "find the link below to be able to reset your password.\n" + url +
+                "/auth/reset?token=" + token);
+        try {
+            javaMailSender.send(message);
+        } catch (MailException ex) {
             throw new EmailFailureException();
         }
     }

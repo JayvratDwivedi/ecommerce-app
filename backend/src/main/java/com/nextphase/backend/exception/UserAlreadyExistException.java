@@ -1,3 +1,4 @@
 package com.nextphase.backend.exception;
 
-public class UserAlreadyExistException extends Exception { }
+public class UserAlreadyExistException extends Exception {
+}
