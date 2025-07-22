@@ -2,8 +2,10 @@ package com.nextphase.backend.api.controller.auth;
 
 import com.nextphase.backend.api.model.LoginBody;
 import com.nextphase.backend.api.model.LoginResponse;
+import com.nextphase.backend.api.model.PasswordResetBody;
 import com.nextphase.backend.api.model.RegistrationBody;
 import com.nextphase.backend.exception.EmailFailureException;
+import com.nextphase.backend.exception.EmailNotFoundException;
 import com.nextphase.backend.exception.UserAlreadyExistException;
 import com.nextphase.backend.exception.UserNotVerifiedException;
 import com.nextphase.backend.model.LocalUser;
@@ -84,6 +86,24 @@ public class AuthenticationController {
         } else {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
+    }
+
+    @PostMapping("/forgot")
+    public ResponseEntity forgotPassword(@RequestParam String email) {
+        try {
+            userService.forgotPassword(email);
+            return ResponseEntity.ok().build();
+        } catch (EmailNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (EmailFailureException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/reset")
+    public ResponseEntity resetPassword(@Valid @RequestBody PasswordResetBody body) {
+        userService.resetPassword(body);
+        return ResponseEntity.ok().build();
     }
 
 }

@@ -1,8 +1,10 @@
 package com.nextphase.backend.service;
 
 import com.nextphase.backend.api.model.LoginBody;
+import com.nextphase.backend.api.model.PasswordResetBody;
 import com.nextphase.backend.api.model.RegistrationBody;
 import com.nextphase.backend.exception.EmailFailureException;
+import com.nextphase.backend.exception.EmailNotFoundException;
 import com.nextphase.backend.exception.UserNotVerifiedException;
 import com.nextphase.backend.model.VerificationToken;
 import com.nextphase.backend.model.dao.LocalUserDAO;
@@ -98,4 +100,26 @@ public class UserService {
         }
         return false;
     }
+
+    public void forgotPassword(String email) throws EmailNotFoundException, EmailFailureException {
+        Optional<LocalUser> opUser = localUserDao.findByEmailIgnoreCase(email);
+        if (opUser.isPresent()) {
+            LocalUser user = opUser.get();
+            String token = jwtService.generatePasswordResetJWT(user);
+            emailService.sendPasswordResetEmail(user, token);
+        } else {
+            throw new EmailNotFoundException();
+        }
+    }
+
+    public void resetPassword(PasswordResetBody body) {
+        String email = jwtService.getResetPasswordEmail(body.getToken());
+        Optional<LocalUser> opUser = localUserDao.findByEmailIgnoreCase(email);
+        if (opUser.isPresent()) {
+            LocalUser user = opUser.get();
+            user.setPassword(encryptionService.encryptPassword(body.getPassword()));
+            localUserDao.save(user);
+        }
+    }
+
 }
