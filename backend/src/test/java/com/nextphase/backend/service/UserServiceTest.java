@@ -113,7 +113,7 @@ public class UserServiceTest {
             userService.loginUser(body);
             Assertions.fail("User should not have email verified.");
         } catch (UserNotVerifiedException ex) {
-            List<VerificationToken> tokens = verificationTokenDAO.findByLocalUser_IdOrderByIdDesc(2L);
+            List<VerificationToken> tokens = verificationTokenDAO.findByUser_IdOrderByIdDesc(2L);
             String token = tokens.getFirst().getToken();
             Assertions.assertTrue(userService.verifyUser(token), "Token should be valid.");
             Assertions.assertNotNull(body, "The user should now be verified.");

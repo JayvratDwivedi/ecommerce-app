@@ -21,11 +21,11 @@ import java.util.Optional;
 @Component
 public class JWTRequestFilter extends OncePerRequestFilter {
     private JWTService jwtService;
-    private LocalUserDAO localUserDao;
+    private LocalUserDAO localUserDAO;
 
-    public JWTRequestFilter(JWTService jwtService, LocalUserDAO localUserDao) {
+    public JWTRequestFilter(JWTService jwtService, LocalUserDAO localUserDAO) {
         this.jwtService = jwtService;
-        this.localUserDao = localUserDao;
+        this.localUserDAO = localUserDAO;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class JWTRequestFilter extends OncePerRequestFilter {
             String token = tokenHeader.substring(7);
             try {
                 String username = jwtService.getUsername(token);
-                Optional<LocalUser> opUser = localUserDao.findByUsernameIgnoreCase(username);
+                Optional<LocalUser> opUser = localUserDAO.findByUsernameIgnoreCase(username);
                 if(opUser.isPresent()) {
                     LocalUser user = opUser.get();
                     if(user.isEmailVerified()) {

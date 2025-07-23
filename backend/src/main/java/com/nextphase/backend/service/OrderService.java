@@ -9,13 +9,13 @@ import java.util.List;
 
 @Service
 public class OrderService {
-    private WebOrderDAO webOrderDao;
+    private WebOrderDAO webOrderDAO;
 
-    public OrderService(WebOrderDAO webOrderDao) {
-        this.webOrderDao = webOrderDao;
+    public OrderService(WebOrderDAO webOrderDAO) {
+        this.webOrderDAO = webOrderDAO;
     }
 
     public List<WebOrder> getOrders(LocalUser localUser) {
-        return webOrderDao.findByUser(localUser);
+        return webOrderDAO.findByUser(localUser);
     }
 }

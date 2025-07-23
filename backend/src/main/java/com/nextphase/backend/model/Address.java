@@ -26,7 +26,7 @@ public class Address {
     @JsonIgnore
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    private LocalUser localUser;
+    private LocalUser user;
 
     public Long getId() {
         return id;
@@ -68,11 +68,11 @@ public class Address {
         this.country = country;
     }
 
-    public LocalUser getLocalUser() {
-        return localUser;
+    public LocalUser getUser() {
+        return user;
     }
 
-    public void setLocalUser(LocalUser localUser) {
-        this.localUser = localUser;
+    public void setUser(LocalUser user) {
+        this.user = user;
     }
 }

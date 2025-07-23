@@ -8,12 +8,12 @@ import java.util.List;
 
 @Service
 public class ProductService {
-    private ProductDAO productDao;
+    private ProductDAO productDAO;
 
-    public ProductService(ProductDAO productDao) {
-        this.productDao = productDao;
+    public ProductService(ProductDAO productDAO) {
+        this.productDAO = productDAO;
     }
     public List<Product> getProducts() {
-        return productDao.findAll();
+        return productDAO.findAll();
     }
 }
